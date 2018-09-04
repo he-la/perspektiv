@@ -1,0 +1,27 @@
+#####################################
+# Configuration File for perspektiv #
+#####################################
+
+# perspektiv is a userland application for reporting system events such as
+# monitor brightness changes or audio mutes to the user with a graphical popup.
+# perspektiv is designed to be easy to extend, so if you encounter any missing
+# functionality, feel free to create a pull request at
+# https://github.com/henriklaxhuber/perspektiv
+
+# The style section specifies configuration for the appearance of the window.
+[window]
+width = 400 # window width
+height = 120 # window height
+padding = 60 # padding on the inside of the window
+spacing = 20 # spacing between elements in the window
+margin_horiz = { anchor = "Right", margin = 10 }
+margin_vert = { anchor = "Top", margin = 10 }
+duration = 1200 # How many milliseconds after an event the window will remain visible
+
+#css = "./my-style.css" # GTK+ CSS file to override appearance
+
+[percentage]
+show_numeric = true # show numbers on percentage bar, e.g. for volume or brightness
+
+[boolean]
+show_label = true # show label for boolean events, e.g. "Muted" or "Wifi off"
