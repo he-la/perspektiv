@@ -33,12 +33,30 @@ regardless of what platform you're on (as long as you're using linux).
 
 perspektiv is written in rust, and to build it, you need a rust compiler. I
 realise that this is quite a large requirement and hope to provide some prebuilt
-binaries soon^TM.
+binaries soon^TM. In the meantime, you can easily set up the rust toolchain with
+[rustup](https://rustup.rs).
 
-You can easily set up the rust toolchain with [rustup](https://rustup.rs). Once
-you have that, clone this repository and run:
+You will also need [Font Awesome 4.7.0](https://fontawesome.com/v4.7.0/) for the
+icons to work. This is likely to change in the future as well. Some
+distributions have a package for Font Awesome:
+
+| Distro         | Package Name                                                                            |
+| -------------- | --------------------------------------------------------------------------------------- |
+| Arch Linux     | [ttf-font-awesome-4](https://aur.archlinux.org/packages/ttf-font-awesome-4/) in the AUR |
+| Ubuntu, Debian | fonts-font-awesome                                                                      |
+
+If your distro is not listed, it might still have a package that I simply don't
+know about. Else, you can just download the [OTF or TTF
+file](https://fontawesome.com/v4.7.0/assets/font-awesome-4.7.0.zip) (in the zip
+file as `fonts/FontAwesome.otf` or `fonts/FontAwesome-webfont.ttf`) and drop it
+into your fonts directory (probably something like `/usr/share/fonts/<TTF or
+OTF>`). If you're not sure whether to use the OTF or TTF file, go with the OTF
+file.
+
+Once you have that, run:
 
 ```shell
+git clone https://github.com/henriklaxhuber/perspektiv && cd perspektiv
 cargo build --release --features "feature_list"
 ```
 
