@@ -58,7 +58,7 @@ pub trait Subscribable {
                 let mut err_count: usize = 0;
                 loop {
                     match f() {
-                        Some(Ok(msg)) => {
+                        Ok(Some(msg)) => {
                             err_count = 0;
                             if actor.tell(msg).is_err() {
                                 error!("Terminating `{}` because the subscribing ui widget has been dropped.",
@@ -66,7 +66,7 @@ pub trait Subscribable {
                                 return;
                             }
                         }
-                        Some(Err(e)) => {
+                        Err(e) => {
                             let mut terminate = false;
                             error!(
                                 "Module `{}` encountered an error:\n  {}\n  {}",
@@ -89,7 +89,7 @@ pub trait Subscribable {
                                 return;
                             }
                         }
-                        None => {
+                        Ok(None) => {
                             continue;
                         }
                     }
@@ -100,5 +100,5 @@ pub trait Subscribable {
 
     fn poll_factory(
         _params: Self::Params,
-    ) -> Result<Box<FnMut() -> Option<Result<ui::Msg, Error>>>, String>;
+    ) -> Result<Box<FnMut() -> Result<Option<ui::Msg>, Error>>, String>;
 }

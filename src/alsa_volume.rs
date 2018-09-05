@@ -140,7 +140,7 @@ impl Subscribable for Subscription {
 
     fn poll_factory(
         _params: Self::Params,
-    ) -> Result<Box<FnMut() -> Option<Result<ui::Msg, subscribable::Error>>>, String> {
+    ) -> Result<Box<FnMut() -> Result<Option<ui::Msg>, subscribable::Error>>, String> {
         let mut poll_fds: Vec<pollfd> = Vec::new();
         let mut cards: Vec<Card> = alsa::card::Iter::new()
             .filter_map(|card| match Card::new(card.unwrap(), &mut poll_fds) {
@@ -170,21 +170,21 @@ impl Subscribable for Subscription {
 
                         if muted && card.volume != -1.0 {
                             card.volume = -1.0;
-                            return Some(Ok(ui::ShowBool("", "Muted")));
+                            return Ok(Some(ui::ShowBool("", "Muted")));
                         } else if !muted && volume != card.volume {
                             card.volume = volume;
-                            return Some(Ok(ui::ShowPercent("", card.volume)));
+                            return Ok(Some(ui::ShowPercent("", card.volume)));
                         }
                     } else {
-                        return Some(Err(subscribable::Error::new(
+                        return Err(subscribable::Error::new(
                             format!("Got unexpected poll flags for {}: {:#?}", card.name, flags),
                             false,
-                        )));
+                        ));
                     }
                 }
             }
 
-            None
+            Ok(None)
         }))
     }
 }
