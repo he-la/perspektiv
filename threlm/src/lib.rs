@@ -135,14 +135,13 @@ impl<C: Model + 'static> Actor<C> {
         let this = self.clone();
         glib::idle_add(move || {
             let message = message.clone();
-            match this.inner.upgrade() {
-                Some(model) => unsafe { model.borrow_mut() }.update(message, this.clone()),
-                None => (), // TODO: Consider implementing some kind of
-                // callback, but that gets messy
+            if let Some(model) = this.inner.upgrade() {
+                unsafe { model.borrow_mut() }.update(message, this.clone());
             }
             Continue(false)
         });
-        return Ok(());
+
+        Ok(())
     }
 }
 
