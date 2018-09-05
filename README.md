@@ -2,7 +2,11 @@
 
 perspektiv (engl. _spotting scope_) is designed to be a lightweight userland
 daemon for graphically reporting system events such as monitor brightness
-changes, audio volume changes etc. I created perspektiv to go hand in hand with
+changes, audio volume changes etc.
+
+![screenshot](screenshot.png)
+
+I created perspektiv to go hand in hand with
 the hotkey setup on my laptop: I wanted something that fits well with the
 graphical theme of my system, was lightweight to comfortably have running as a
 daemon in the background, and was hackable enough to easily add functionality as
