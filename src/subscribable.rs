@@ -33,7 +33,10 @@ pub trait Subscribable {
                 let mut f = match Self::poll_factory(params) {
                     Ok(f) => f,
                     Err(msg) => {
-                        println!("Could not create polling function for module `{}`: {}", module_name, msg);
+                        error!(
+                            "Could not create polling function for module `{}`:\n  {}",
+                            module_name, msg
+                        );
                         return;
                     }
                 };
@@ -43,25 +46,37 @@ pub trait Subscribable {
                         Some(Ok(msg)) => {
                             err_count = 0;
                             if actor.tell(msg).is_err() {
-                                println!("Terminating `{}` because the subscribing ui widget has been dropped.",
+                                error!("Terminating `{}` because the subscribing ui widget has been dropped.",
                                          module_name);
                                 return;
                             }
                         }
                         Some(Err(e)) => {
-                            println!("Module `{}` encountered an error:\n  {}", module_name, e.message);
-                            if e.fatal {
-                                println!("  This is a fatal error; terminating the module!");
-                                return;
-                            } else {
-                                err_count += 1;
-                                if err_count >= 3 {
-                                    println!("  This is the third non-fatal error in a row; \
-                                              terminating the module!");
+                            let mut terminate = false;
+                            error!(
+                                "Module `{}` encountered an error:\n  {}\n  {}",
+                                module_name,
+                                e.message,
+                                if e.fatal {
+                                    terminate = true;
+                                    "This is a fatal error; terminating the module!"
+                                } else {
+                                    err_count += 1;
+                                    if err_count >= 3 {
+                                        terminate = true;
+                                        "This is the third non-fatal error in a row; terminating the module!"
+                                    } else {
+                                        "Attempting to continue execution of the module."
+                                    }
                                 }
+                            );
+                            if terminate {
+                                return;
                             }
                         }
-                        None => {continue;}
+                        None => {
+                            continue;
+                        }
                     }
                 }
             })

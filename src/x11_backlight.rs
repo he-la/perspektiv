@@ -17,9 +17,11 @@ macro_rules! assert_err {
     ($test:expr, $message:expr) => {
         if !$test {
             return Err(format!(
-                "{}\n  (assertion {} failed)",
-                &$message,
-                &stringify!($test)
+                "{msg}.\n  L{line} in {module}: assertion `{assertion}` failed",
+                msg = &$message,
+                line = line!(),
+                module = module_path!(),
+                assertion = &stringify!($test),
             ));
         }
     };

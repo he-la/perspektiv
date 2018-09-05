@@ -131,7 +131,8 @@ impl Subscribable for Subscription {
             .filter_map(|card| match Card::new(card.unwrap(), &mut poll_fds) {
                 Ok(card) => Some(card),
                 Err(_) => None,
-            }).collect();
+            })
+            .collect();
 
         if cards.len() == 0 {
             return Err("Failed to find any sound cards with a master volume.".to_string());
@@ -139,7 +140,7 @@ impl Subscribable for Subscription {
 
         Ok(Box::new(move || {
             poll(&mut poll_fds, -1).unwrap();
-            
+
             for card in &mut cards {
                 let flags = card
                     .ctl

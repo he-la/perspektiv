@@ -50,16 +50,6 @@ macro_rules! dimen {
 
 impl Window {
     pub fn new(config: &'static Config) -> Self {
-        let css_provider = gtk::CssProvider::new();
-        css_provider
-            .load_from_data(
-                r#"
-label#icon {
-font-size: 36pt;
-}
-"#.as_bytes(),
-            ).unwrap();
-
         let gtk_window = gtk::Window::new(Popup);
         gtk_window.set_name("window");
 
@@ -127,11 +117,45 @@ font-size: 36pt;
         outer_container.show_all();
         container.get_children().iter().for_each(|w| w.hide());
 
+        let default_css = gtk::CssProvider::new();
+        default_css
+            .load_from_data(
+                r#"
+label#icon {
+font-size: 36pt;
+}
+"#.as_bytes(),
+            )
+            .unwrap();
         gtk::StyleContext::add_provider_for_screen(
             &screen,
-            &css_provider,
+            &default_css,
             STYLE_PROVIDER_PRIORITY_APPLICATION,
         );
+
+        if let Some(ref path) = config.window.css {
+            match path.as_path().to_str() {
+                Some(path) => {
+                    let css_provider = gtk::CssProvider::new();
+                    if css_provider.load_from_path(path).is_err() {
+                        error!(
+                            "Failed to load CSS from custom path `{:#?}`",
+                            path
+                        );
+                    } else {
+                        gtk::StyleContext::add_provider_for_screen(
+                            &screen,
+                            &css_provider,
+                            STYLE_PROVIDER_PRIORITY_APPLICATION,
+                        );
+                    }
+                }
+                None => error!(
+                    "Custom CSS path `{:#?}` is not valid unicode",
+                    path
+                ),
+            }
+        }
 
         Window {
             config,
@@ -188,7 +212,7 @@ impl Model for Window {
 
         // Subscribe to modules
         macro_rules! subscribe {
-            ($module:ident, $params: expr) => {
+            ($module:ident, $params:expr) => {
                 $crate::$module::Subscription::subscribe(
                     actor.clone(),
                     stringify!($module),
