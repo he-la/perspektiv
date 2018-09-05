@@ -45,8 +45,8 @@ like to include. You can pick from the following modules:
 - `alsa_volume`: Show a popup with the current volume or mute status when they
   are changed
   
-The binary will be created as `./target/release/perspektiv`. Drop this into your
-$PATH somewhere (for a system-wide installation, something like `/bin` will
+The binary will be created as `./target/release/perspektiv`. Drop this file into
+your $PATH somewhere (for a system-wide installation, something like `/bin` will
 probaly work well) and set up your system to run the binary on boot.
 
 If you use systemd, you can use the provided [systemd unit](perspektiv.service).
