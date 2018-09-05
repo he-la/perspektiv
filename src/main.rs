@@ -16,6 +16,7 @@
 #[macro_use]
 extern crate lazy_static;
 
+// For logging
 #[macro_use]
 extern crate log;
 extern crate stderrlog;
@@ -24,6 +25,7 @@ extern crate stderrlog;
 #[macro_use]
 extern crate serde_derive;
 
+// For UI
 extern crate gdk;
 extern crate glib;
 extern crate gtk;
