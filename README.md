@@ -18,7 +18,7 @@ enough to implement. Currently, that's just the following:
 - Audio volume/mute with ALSA
 
 I have a few more things on my roadmap:
-- Bluetoth toggle
+- Bluetooth toggle
 - Wifi toggle
 
 If there are any additional things that you would like to have, you can easily
