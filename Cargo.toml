@@ -49,6 +49,6 @@ rpath = false
 debug-assertions = false
 overflow-checks = false
 codegen-units = 4
-incremental = true
+incremental = false # Needed for LTO
 lto = true
 panic = 'abort' # Errors in threads (modules) are handled reasonably well, panics shouldn't happen
