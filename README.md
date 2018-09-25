@@ -69,13 +69,8 @@ like to include. You can pick from the following modules:
   
 The binary will be created as `./target/release/perspektiv`. Drop this file into
 your $PATH somewhere (for a system-wide installation, something like `/bin` will
-probaly work well) and set up your system to run the binary on boot.
-
-If you use systemd, you can use the provided [systemd unit](perspektiv.service).
-You will probably want to edit the `ExecStart` line in that file to point to the
-location where you installed perspektiv. Drop the file into e.g.
-`~/.config/systemd/user/perspektiv.service` and run `systemctl --user enable
-perspektiv.service && systemctl --user start perspektiv.service`.
+probaly work well). You must still configure your display manager to start
+perspektiv once you log in! Make sure you don't run perspektiv as root.
 
 Note that runnning perspektiv for the first time will create a default
 configuration file under `~/.config/perspektiv`.
