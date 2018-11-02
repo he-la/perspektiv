@@ -16,7 +16,7 @@
 extern crate glib;
 extern crate gtk;
 
-use std::{clone::Clone, ops::Deref, sync, sync::Arc,};
+use std::{clone::Clone, ops::Deref, sync, sync::Arc};
 
 use gtk::{Continue, IsA};
 
@@ -176,33 +176,33 @@ pub trait View: Model {
 // =======================
 
 // use self::Msg::*;
-// 
+//
 // #[derive(Clone, Debug)]
 // enum Msg {
 //     Quit,
 // }
-// 
+//
 // struct App {
 //     window: gtk::Window,
 //     button: gtk::Button,
 // }
-// 
+//
 // impl App {
 //     pub fn new() -> Self {
 //         let window = gtk::Window::new(Popup);
-// 
+//
 //         let button = gtk::Button::new_with_label("Quit");
-// 
+//
 //         window.add(&button);
 //         window.show_all();
-// 
+//
 //         Self { window, button }
 //     }
 // }
-// 
+//
 // impl Model for App {
 //     type Message = Msg;
-// 
+//
 //     // TODO: Find a better name for `this`
 //     fn connect(&self, this: Actor<Self>) {
 //         self.window.connect_delete_event({
@@ -212,7 +212,7 @@ pub trait View: Model {
 //                 Inhibit(false)
 //             }
 //         });
-// 
+//
 //         self.button.connect_clicked({
 //             let this = this.clone();
 //             let button = self.button.clone();
@@ -229,7 +229,7 @@ pub trait View: Model {
 //             }
 //         });
 //     }
-// 
+//
 //     fn update(&mut self, message: Msg) {
 //         println!("Got message: {:#?}", message);
 //         match message {
@@ -239,20 +239,20 @@ pub trait View: Model {
 //         }
 //     }
 // }
-// 
+//
 // impl View for App {
 //     type Root = gtk::Window;
-// 
+//
 //     fn root(&self) -> &Self::Root {
 //         &self.window
 //     }
 // }
-// 
+//
 // fn main() {
 //     gtk::init().expect("Failed to initialise GTK");
-// 
+//
 //     let app = App::new();
 //     let _threlm = Threlm::new(app);
-// 
+//
 //     gtk::main();
 // }

@@ -114,7 +114,5 @@ pub trait Subscribable {
             .unwrap();
     }
 
-    fn poll_factory(
-        _params: Self::Params,
-    ) -> Result<Box<PollFn>, String>;
+    fn poll_factory(_params: Self::Params) -> Result<Box<PollFn>, String>;
 }

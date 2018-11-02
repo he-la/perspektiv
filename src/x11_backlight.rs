@@ -163,9 +163,7 @@ pub struct Subscription();
 impl Subscribable for Subscription {
     type Params = xlib::Window;
 
-    fn poll_factory(
-        window: Self::Params,
-    ) -> Result<Box<subscribable::PollFn>, String> {
+    fn poll_factory(window: Self::Params) -> Result<Box<subscribable::PollFn>, String> {
         let mut backlight = Backlight::new()?;
 
         // Subscribe to X11 event for (any) RandR Output Property changes on the display.

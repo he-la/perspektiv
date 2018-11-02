@@ -43,19 +43,19 @@ macro_rules! config_requires {
     (not_both $a:expr, $b:expr) => {
         if $a.is_some() && $b.is_some() {
             config_requires!(@panic_msg
-                             "Configuration option `{a}` conflicts with option `{b}`.
+                                     "Configuration option `{a}` conflicts with option `{b}`.
   help: Remove either `{a}` or `{b}` from your configuration.",
-                             $a, $b
-            );
+                                     $a, $b
+                    );
         }
     };
 
     (one_of $a:expr, $b:expr) => {
         if $a.is_none() && $b.is_none() {
             config_requires!(@panic_msg
-                             "Configuration requires one of `{a}` or `{b}` to be set.",
-                             $a, $b
-            );
+                                     "Configuration requires one of `{a}` or `{b}` to be set.",
+                                     $a, $b
+                    );
         }
     };
 
@@ -164,16 +164,19 @@ pub fn read() -> Config {
     // Modify config
     // expand css path
     config = match config {
-        Config { window: Window { css: Some(path), .. }, .. } => {
-            Config {
-                window: Window {
-                    css: Some(expand_path(path, &config_dir)),
-                    ..config.window
-                },
-                ..config
-            }
+        Config {
+            window: Window {
+                css: Some(path), ..
+            },
+            ..
+        } => Config {
+            window: Window {
+                css: Some(expand_path(path, &config_dir)),
+                ..config.window
+            },
+            ..config
         },
-        _ => config
+        _ => config,
     };
 
     return config;

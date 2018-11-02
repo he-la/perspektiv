@@ -153,10 +153,7 @@ font-size: 36pt;
                 Some(path) => {
                     let css_provider = gtk::CssProvider::new();
                     if css_provider.load_from_path(path).is_err() {
-                        error!(
-                            "Failed to load CSS from custom path `{:#?}`",
-                            path
-                        );
+                        error!("Failed to load CSS from custom path `{:#?}`", path);
                     } else {
                         gtk::StyleContext::add_provider_for_screen(
                             &screen,
@@ -165,10 +162,7 @@ font-size: 36pt;
                         );
                     }
                 }
-                None => error!(
-                    "Custom CSS path `{:#?}` is not valid unicode",
-                    path
-                ),
+                None => error!("Custom CSS path `{:#?}` is not valid unicode", path),
             }
         }
 

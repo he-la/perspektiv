@@ -138,9 +138,7 @@ pub struct Subscription();
 impl Subscribable for Subscription {
     type Params = ();
 
-    fn poll_factory(
-        _params: Self::Params,
-    ) -> Result<Box<subscribable::PollFn>, String> {
+    fn poll_factory(_params: Self::Params) -> Result<Box<subscribable::PollFn>, String> {
         let mut poll_fds: Vec<pollfd> = Vec::new();
         let mut cards: Vec<Card> = alsa::card::Iter::new()
             .filter_map(|card| match Card::new(card.unwrap(), &mut poll_fds) {
@@ -149,7 +147,10 @@ impl Subscribable for Subscription {
             })
             .collect();
 
-        err_if!(cards.len() == 0, "Failed to find any sound cards with a master volume.".to_string());
+        err_if!(
+            cards.len() == 0,
+            "Failed to find any sound cards with a master volume.".to_string()
+        );
 
         Ok(Box::new(move || {
             loop {
@@ -175,12 +176,10 @@ impl Subscribable for Subscription {
                                 return Ok(ui::ShowPercent("", card.volume));
                             }
                         } else {
-                            return Err(subscribable::Error::from(
-                                format!(
-                                    "Got unexpected poll flags for {}: {:#?}",
-                                    card.name, flags
-                                )
-                            ));
+                            return Err(subscribable::Error::from(format!(
+                                "Got unexpected poll flags for {}: {:#?}",
+                                card.name, flags
+                            )));
                         }
                     }
                 }
