@@ -40,6 +40,11 @@ extern crate gdk_sys;
 // Currently only used by alsa
 extern crate libc;
 
+// Common macros
+#[macro_use]
+mod macros;
+
+// Common modules
 mod config;
 mod subscribable;
 mod ui;

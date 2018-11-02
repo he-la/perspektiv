@@ -149,9 +149,7 @@ impl Subscribable for Subscription {
             })
             .collect();
 
-        if cards.len() == 0 {
-            return Err("Failed to find any sound cards with a master volume.".to_string());
-        }
+        err_if!(cards.len() == 0, "Failed to find any sound cards with a master volume.".to_string());
 
         Ok(Box::new(move || {
             loop {

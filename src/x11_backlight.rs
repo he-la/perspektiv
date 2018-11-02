@@ -28,27 +28,6 @@ use subscribable;
 use subscribable::Subscribable;
 use ui;
 
-macro_rules! assert_err {
-    ($test:expr, $message:expr) => {
-        if !$test {
-            return Err(format!(
-                "{msg}.\n  L{line} in {module}: assertion `{assertion}` failed",
-                msg = &$message,
-                line = line!(),
-                module = module_path!(),
-                assertion = &stringify!($test),
-            ));
-        }
-    };
-}
-
-#[allow(unused_macros)]
-macro_rules! printdbg {
-    ($e:expr) => {
-        println!("{}: {:#?}", stringify!($e), $e)
-    };
-}
-
 pub struct Backlight {
     display: *mut Display,
     backlight: Atom,
@@ -62,18 +41,18 @@ impl Backlight {
     fn new() -> Result<Backlight, String> {
         unsafe {
             let display = XOpenDisplay(ptr::null());
-            assert_err!(
-                !display.is_null(),
+            err_if!(
+                display.is_null(),
                 "Cannot open default display (maybe no $DISPLAY environment variable set)"
             );
 
             let mut major: c_int = uninitialized();
             let mut minor: c_int = uninitialized();
-            assert_err!(
+            err_expect!(
                 XRRQueryVersion(display, &mut major as *mut c_int, &mut minor as *mut c_int) != 0,
                 "RandR extension missing"
             );
-            assert_err!(
+            err_expect!(
                 major > 1 || (major == 1 && minor > 2),
                 "RandR version too old"
             );
@@ -84,35 +63,35 @@ impl Backlight {
             if backlight != 0 {
                 backlight_name = CString::new("BACKLIGHT").unwrap().into_raw();
                 backlight = XInternAtom(display, backlight_name, true as i32);
-                assert_err!(
-                    backlight != 0,
+                err_if!(
+                    backlight == 0,
                     "Given display has no property `Backlight` or `BACKLIGHT`"
                 );
             }
             let _ = CString::from_raw(backlight_name); // back into Rust memory management to free properly
 
             let root = XDefaultRootWindow(display);
-            assert_err!(
-                root != 0,
+            err_if!(
+                root == 0,
                 "Cannot get default root window for given display"
             );
 
             let resources = XRRGetScreenResources(display, root);
-            assert_err!(
-                !resources.is_null(),
+            err_if!(
+                resources.is_null(),
                 "Cannot get xrandr resources for given display and root"
             );
 
             let output_ptr = (*resources).outputs;
-            assert_err!(
-                !output_ptr.is_null(),
+            err_if!(
+                output_ptr.is_null(),
                 "Cannot get outputs for given xrandr resources"
             );
             let output = *output_ptr;
 
             let backlight_info = XRRQueryOutputProperty(display, output, backlight);
-            assert_err!(
-                !backlight_info.is_null(),
+            err_if!(
+                backlight_info.is_null(),
                 "Cannot get property `Backlight` for given display and xrandr outputs"
             );
 
@@ -157,15 +136,15 @@ impl Backlight {
                 &mut prop as *mut *mut c_uchar,   // prop: *mut *mut c_uchar
             );
 
-            assert_err!(
+            err_expect!(
                 actual_type == XA_INTEGER,
                 "X11 did not return an integer for the backlight property"
             );
-            assert_err!(
+            err_expect!(
                 n_items == 1,
                 "Got zero or multiple values for backlight property; expected exactly one"
             );
-            assert_err!(
+            err_expect!(
                 actual_format == 32,
                 "Backlight was not a 32-bit value as expected"
             );
