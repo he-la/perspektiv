@@ -186,7 +186,7 @@ impl Subscribable for Subscription {
 
     fn poll_factory(
         window: Self::Params,
-    ) -> Result<Box<FnMut() -> Result<ui::Msg, subscribable::Error>>, String> {
+    ) -> Result<Box<subscribable::PollFn>, String> {
         let mut backlight = Backlight::new()?;
 
         // Subscribe to X11 event for (any) RandR Output Property changes on the display.
@@ -234,7 +234,7 @@ impl Subscribable for Subscription {
                         return Ok(ui::ShowPercent("", brightness));
                     }
                     Err(msg) => {
-                        return Err(subscribable::Error::new(msg, false));
+                        return Err(subscribable::Error::from(msg));
                     }
                 }
             }

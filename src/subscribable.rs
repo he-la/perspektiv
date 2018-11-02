@@ -18,6 +18,7 @@ use std::thread;
 use threlm;
 use ui;
 
+// Error Type
 pub struct Error {
     message: String,
     fatal: bool,
@@ -33,7 +34,25 @@ impl Error {
         }
     }
 }
+impl From<String> for Error {
+    fn from(msg: String) -> Self {
+        Self {
+            message: msg,
+            fatal: false,
+        }
+    }
+}
+impl<'a> From<&'a str> for Error {
+    fn from(msg: &'a str) -> Self {
+        Self::from(msg.to_owned())
+    }
+}
 
+// Type shortcuts
+pub type PollResult = Result<ui::Msg, Error>;
+pub type PollFn = FnMut() -> PollResult;
+
+// Subscribable
 pub trait Subscribable {
     type Params: Send + 'static;
 
@@ -97,5 +116,5 @@ pub trait Subscribable {
 
     fn poll_factory(
         _params: Self::Params,
-    ) -> Result<Box<FnMut() -> Result<ui::Msg, Error>>, String>;
+    ) -> Result<Box<PollFn>, String>;
 }
