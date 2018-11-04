@@ -18,7 +18,7 @@
 
 extern crate alsa;
 
-use std::mem;
+use std::{mem, borrow::Cow};
 
 use self::alsa::mixer::{Mixer, Selem, SelemChannelId, SelemId};
 use self::alsa::poll::*;
@@ -170,7 +170,7 @@ impl Subscribable for Subscription {
 
                             if muted && card.volume != -1.0 {
                                 card.volume = -1.0;
-                                return Ok(ui::ShowBool("", "Muted"));
+                                return Ok(ui::ShowBool("", Cow::from("Muted")));
                             } else if !muted && volume != card.volume {
                                 card.volume = volume;
                                 return Ok(ui::ShowPercent("", card.volume));

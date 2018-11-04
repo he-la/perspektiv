@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <https://www.gnu.org/licenses/>.
 
+use std::borrow::Cow;
+
 use gtk;
 use gtk::{
     AdjustmentExt, Align::Center, ContainerExt, Continue, CssProviderExt, GtkWindowExt, Inhibit,
@@ -202,7 +204,7 @@ font-size: 36pt;
 #[derive(Clone, Debug)]
 pub enum Msg {
     ShowPercent(&'static str, f64),
-    ShowBool(&'static str, &'static str),
+    ShowBool(&'static str, Cow<'static, str>),
     Hide,
     Quit,
 }
@@ -245,6 +247,9 @@ impl Model for Window {
 
         #[cfg(feature = "alsa_volume")]
         subscribe!(alsa_volume, ());
+
+        #[cfg(feature = "rfkill")]
+        subscribe!(rfkill, ());
     }
 
     fn update(&mut self, msg: Self::Message, actor: Actor<Self>) {
@@ -273,7 +278,7 @@ impl Model for Window {
 
                 self.widgets.icon.set_text(icon);
                 if self.config.boolean.show_label {
-                    self.widgets.bool_label.set_text(label);
+                    self.widgets.bool_label.set_text(&label);
                     self.widgets.bool_label.show();
                 }
                 self.widgets.gtk_window.show();

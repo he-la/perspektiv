@@ -30,6 +30,7 @@ default = [] # Make it explicit that features must be selected manually
 none = []
 x11_backlight = ["x11"]
 alsa_volume = ["alsa"]
+rfkill = []
 
 [profile.dev]
 opt-level = 0

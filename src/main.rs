@@ -54,11 +54,17 @@ use config::Config;
 // MODULES
 #[cfg(feature = "alsa_volume")]
 mod alsa_volume;
+#[cfg(feature = "rfkill")]
+mod rfkill;
 #[cfg(feature = "x11_backlight")]
 mod x11_backlight;
 
 // error if no modules were selected (this is the default)
-#[cfg(not(any(feature = "alsa_volume", feature = "x11_backlight")))]
+#[cfg(not(any(
+    feature = "alsa_volume",
+    feature = "x11_backlight",
+    feature = "rfkill"
+)))]
 compile_error!("You should select some modules that you want to use. See the README.md for more information on how to do that.");
 
 lazy_static! {
