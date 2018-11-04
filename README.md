@@ -17,7 +17,8 @@ enough to implement. Currently, that's just the following:
 - Monitor brightness with X11/RandR
 - Audio volume/mute with ALSA
 
-I have a few more things on my roadmap:
+There's also the `feature/rfkill` branch with a proof-of-concept for an rfkill
+module, i.e. for stuff like
 - Bluetooth toggle
 - Wifi toggle
 
@@ -66,6 +67,8 @@ like to include. You can pick from the following modules:
 - `x11_backlight`: Show a popup with the monitor brightness when it is changed
 - `alsa_volume`: Show a popup with the current volume or mute status when they
   are changed
+- (PoC) `rfkill`: Any rfkill block/unblock event. Support is experimental; you
+  need to checkout the branch `feature/rfkill` to build the module.
   
 The binary will be created as `./target/release/perspektiv`. Drop this file into
 your $PATH somewhere (for a system-wide installation, something like `/bin` will
