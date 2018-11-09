@@ -102,6 +102,10 @@ impl Window {
             ),
         );
 
+        if config.window.opacity < 100 {
+            gtk_window.set_opacity(config.window.opacity as f64 / 100.0);
+        }
+
         // Topmost container holding child widgets in the window
         let outer_container = gtk::Box::new(Orientation::Vertical, config.window.spacing as i32);
         outer_container.set_name("outer_container");

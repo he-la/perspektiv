@@ -17,6 +17,7 @@ spacing = 20 # spacing between elements in the window
 margin_horiz = { anchor = "Right", margin = 10 }
 margin_vert = { anchor = "Top", margin = 10 }
 duration = 1200 # How many milliseconds after an event the window will remain visible
+opacity = 100 # window opacity in percent
 
 #css = "./my-style.css" # GTK+ CSS file to override appearance
 

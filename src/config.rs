@@ -87,6 +87,8 @@ pub struct Window {
     pub padding: u32,
     pub spacing: u32,
     pub css: Option<PathBuf>,
+
+    pub opacity: u32,
 }
 
 #[derive(Deserialize)]
