@@ -36,21 +36,18 @@ impl Error {
 }
 impl From<String> for Error {
     fn from(msg: String) -> Self {
-        Self {
-            message: msg,
-            fatal: false,
-        }
+        Self::new(msg, false)
     }
 }
 impl<'a> From<&'a str> for Error {
     fn from(msg: &'a str) -> Self {
-        Self::from(msg.to_owned())
+        Self::new(msg, false)
     }
 }
 
 // Type shortcuts
 pub type PollResult = Result<ui::Msg, Error>;
-pub type PollFn = FnMut() -> PollResult;
+pub type PollFn = dyn FnMut() -> PollResult;
 
 // Subscribable
 pub trait Subscribable {

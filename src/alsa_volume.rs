@@ -25,7 +25,7 @@ use self::alsa::poll::*;
 use libc::pollfd;
 
 use subscribable;
-use subscribable::Subscribable;
+use subscribable::{PollFn, Subscribable};
 use ui;
 
 const SND_CTL_TLV_DB_GAIN_MUTE: i64 = -9_999_999;
@@ -138,14 +138,13 @@ pub struct Subscription();
 impl Subscribable for Subscription {
     type Params = ();
 
-    fn poll_factory(_params: Self::Params) -> Result<Box<subscribable::PollFn>, String> {
+    fn poll_factory(_params: Self::Params) -> Result<Box<PollFn>, String> {
         let mut poll_fds: Vec<pollfd> = Vec::new();
         let mut cards: Vec<Card> = alsa::card::Iter::new()
             .filter_map(|card| match Card::new(card.unwrap(), &mut poll_fds) {
                 Ok(card) => Some(card),
                 Err(_) => None,
-            })
-            .collect();
+            }).collect();
 
         err_if!(
             cards.len() == 0,

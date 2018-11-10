@@ -25,7 +25,7 @@ use self::x11::xlib; // also allow scoped access for disambiguation
 use self::x11::{xlib::*, xrandr::*};
 
 use subscribable;
-use subscribable::Subscribable;
+use subscribable::{PollFn, Subscribable};
 use ui;
 
 pub struct Backlight {
@@ -163,7 +163,7 @@ pub struct Subscription();
 impl Subscribable for Subscription {
     type Params = xlib::Window;
 
-    fn poll_factory(window: Self::Params) -> Result<Box<subscribable::PollFn>, String> {
+    fn poll_factory(window: Self::Params) -> Result<Box<PollFn>, String> {
         let mut backlight = Backlight::new()?;
 
         // Subscribe to X11 event for (any) RandR Output Property changes on the display.

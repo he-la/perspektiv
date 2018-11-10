@@ -144,8 +144,7 @@ label#icon {
 font-size: 36pt;
 }
 "#.as_bytes(),
-            )
-            .unwrap();
+            ).unwrap();
         gtk::StyleContext::add_provider_for_screen(
             &screen,
             &default_css,
