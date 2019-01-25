@@ -1,4 +1,4 @@
-# perspektiv
+# perspektiv [![perspektiv](https://travis-ci.org/henriklaxhuber/perspektiv.svg?branch=master)](https://github.com/henriklaxhuber/perspektiv)
 
 perspektiv (engl. _spotting scope_) is designed to be a lightweight userland
 daemon for graphically reporting system events such as monitor brightness
@@ -32,14 +32,10 @@ regardless of what platform you're on (as long as you're using linux).
 
 ## Installation
 
-perspektiv is written in rust, and to build it, you need a rust compiler. I
-realise that this is quite a large requirement and hope to provide some prebuilt
-binaries soon^TM. In the meantime, you can easily set up the rust toolchain with
-[rustup](https://rustup.rs).
-
-You will also need [Font Awesome 4.7.0](https://fontawesome.com/v4.7.0/) for the
-icons to work. This is likely to change in the future as well. Some
-distributions have a package for Font Awesome:
+### Dependencies
+Icons are currently based on [Font Awesome
+4.7.0](https://fontawesome.com/v4.7.0/). Some distributions have a package for
+Font Awesome:
 
 | Distro         | Package Name                                                                            |
 | -------------- | --------------------------------------------------------------------------------------- |
@@ -54,8 +50,26 @@ into your fonts directory (probably something like `/usr/share/fonts/<TTF or
 OTF>`). If you're not sure whether to use the OTF or TTF file, go with the OTF
 file.
 
-Once you have that, run:
+### Prebuilt Binaries
+For x86_64, prebuilt binaries are available in the `gh-pages` branch:
+```shell
+git clone https://github.com/henriklaxhuber/perspektiv && cd perspektiv
+git checkout gh-pages
+```
 
+Choose the binary that includes the modules you wish to run.
+
+### Building from Source
+1. Build Dependencies:
+   - Get a stable rust compiler from [rustup](https://rustup.rs/)
+   - Install GTK+3 shared libraries and development files (`libgtk-3-dev` on ubuntu)
+   - Install libc6 dev library (`libc6-dev` on ubuntu)
+   - For the `x11_backlight` module, install `libxrandr-dev` (ubuntu) or your
+     distro's equivalent
+   - For the `alsa_volume` module, install `libasound2-dev` (ubuntu) or your
+     distro's equivalent
+
+2. Building:
 ```shell
 git clone https://github.com/henriklaxhuber/perspektiv && cd perspektiv
 cargo build --release --features "feature_list"
@@ -69,11 +83,14 @@ like to include. You can pick from the following modules:
   are changed
 - (PoC) `rfkill`: Any rfkill block/unblock event. Support is experimental; you
   need to checkout the branch `feature/rfkill` to build the module.
-  
-The binary will be created as `./target/release/perspektiv`. Drop this file into
-your $PATH somewhere (for a system-wide installation, something like `/bin` will
-probaly work well). You must still configure your display manager to start
-perspektiv once you log in! Make sure you don't run perspektiv as root.
+
+The binary will be created as `./target/release/perspektiv`.
+
+### Final Steps
+Drop the binary file into your $PATH somewhere (for a system-wide installation,
+something like `/bin` will probaly work well). You must still configure your
+display manager to start perspektiv once you log in! Make sure you don't run
+perspektiv as root.
 
 Note that runnning perspektiv for the first time will create a default
 configuration file under `~/.config/perspektiv`.
